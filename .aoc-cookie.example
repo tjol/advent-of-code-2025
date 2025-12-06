@@ -1,0 +1,12 @@
+# curl cookie file
+# replace "xxx" with your session cookie
+#
+# the tab–separated fields are:
+#    string example.com - the domain name
+#    boolean FALSE - include subdomains
+#    string /foobar/ - path
+#    boolean TRUE - send/receive over HTTPS only
+#    number 1462299217 - expires at - seconds since Jan 1st 1970, or 0
+#    string person - name of the cookie
+#    string daniel - value of the cookie
+.adventofcode.com	TRUE	/	FALSE	1799177995	session	xxx
