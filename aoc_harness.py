@@ -24,7 +24,7 @@ def puzzle_main(*solvers):
         t2 = time.perf_counter()
         print(result)
         duration = t2 - t1
-        print(f"time: {duration*1000.0:.03f} ms")
+        print(f"time: {duration * 1000.0:.03f} ms")
 
 
 def get_input_path(solver):
@@ -40,7 +40,7 @@ def get_input_path(solver):
     if os.path.exists(cookie_file):
         day_num = int(mod_basename.removeprefix("day"))
         url = f"https://adventofcode.com/2025/day/{day_num}/input"
-        os.makedirs(os.path.join(project_root, 'input'), exist_ok=True)
+        os.makedirs(os.path.join(project_root, "input"), exist_ok=True)
         subprocess.check_call(["curl", "-o", input_file_name, "-b", cookie_file, url])
         return input_file_name
     else:

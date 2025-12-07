@@ -7,8 +7,9 @@ def day01part1(input: str):
         pos = (pos + delta) % 100
         if pos == 0:
             zeros += 1
-    
+
     return zeros
+
 
 def day01part2(input: str):
     zero_passes = 0
@@ -16,7 +17,7 @@ def day01part2(input: str):
     for line in input.strip().splitlines():
         sign = (-1) if line[0] == "L" else (+1)
         delta = int(line[1:]) * sign
-        
+
         dest = pos + delta
         if dest <= 0:
             if pos > 0:
@@ -26,7 +27,7 @@ def day01part2(input: str):
         else:
             zero_passes += dest // 100
             pos = dest % 100
-    
+
     return zero_passes
 
 
@@ -46,6 +47,7 @@ L82
 
 def test_part1():
     assert day01part1(TEST_INPUT_1) == 3
+
 
 def test_part2():
     assert day01part2(TEST_INPUT_1) == 6

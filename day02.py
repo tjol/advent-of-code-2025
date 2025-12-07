@@ -1,5 +1,6 @@
 import itertools
 
+
 def day02part1(input: str):
     ranges = [
         tuple(map(int, range_str.split("-"))) for range_str in input.strip().split(",")
@@ -17,6 +18,7 @@ def day02part1(input: str):
                 break
 
     return invalid_sum
+
 
 def day02part2(input: str):
     ranges = [
@@ -49,6 +51,7 @@ TEST_INPUT_1 = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,169852
 
 def test_part1():
     assert day02part1(TEST_INPUT_1) == 1227775554
+
 
 def test_part2():
     assert day02part2(TEST_INPUT_1) == 4174379265
