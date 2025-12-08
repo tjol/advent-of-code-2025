@@ -1,17 +1,20 @@
 from functools import reduce
 import operator
+import numpy as np
 
 
 def day08part1(input_: str, *, n=1000):
-    coords = [tuple(map(int, l.split(","))) for l in input_.strip().splitlines()]
+    coords = np.fromstring(
+        input_.strip().replace("\n", ","), sep=",", dtype="u8"
+    ).reshape((-1, 3))
+    ii = np.arange(len(coords), dtype="u8")
+    II, JJ = np.meshgrid(ii, ii)
+    sq_dists = np.sum((coords[II] - coords[JJ]) ** 2, axis=-1)
+    full_sq_dist_list = np.stack([sq_dists, II, JJ], axis=-1).reshape((-1, 3))
+    sq_dist_list = full_sq_dist_list[full_sq_dist_list[:, 1] < full_sq_dist_list[:, 2]]
 
-    sq_dist_list = []
-    for i, a in enumerate(coords):
-        for j, b in enumerate(coords[i + 1 :], start=i + 1):
-            sq_dist = sum((a_ - b_) ** 2 for a_, b_ in zip(a, b))
-            sq_dist_list.append((sq_dist, i, j))
+    sq_dist_list = sq_dist_list[np.argsort(sq_dist_list[:, 0])]
 
-    sq_dist_list.sort()
     circuits = [{i} for i in range(len(coords))]
 
     for _, i, j in sq_dist_list[:n]:
@@ -27,20 +30,23 @@ def day08part1(input_: str, *, n=1000):
 
 
 def day08part2(input_: str):
-    coords = [tuple(map(int, l.split(","))) for l in input_.strip().splitlines()]
+    coords = np.fromstring(
+        input_.strip().replace("\n", ","), sep=",", dtype="u8"
+    ).reshape((-1, 3))
+    ii = np.arange(len(coords), dtype="u8")
+    II, JJ = np.meshgrid(ii, ii)
+    sq_dists = np.sum((coords[II] - coords[JJ]) ** 2, axis=-1)
+    full_sq_dist_list = np.stack([sq_dists, II, JJ], axis=-1).reshape((-1, 3))
+    sq_dist_list = full_sq_dist_list[full_sq_dist_list[:, 1] < full_sq_dist_list[:, 2]]
 
-    sq_dist_list = []
-    for i, a in enumerate(coords):
-        for j, b in enumerate(coords[i + 1 :], start=i + 1):
-            sq_dist = sum((a_ - b_) ** 2 for a_, b_ in zip(a, b))
-            sq_dist_list.append((sq_dist, i, j))
+    sq_dist_list = sq_dist_list[np.argsort(sq_dist_list[:, 0])]
 
-    sq_dist_list.sort(reverse=True)
     count = len(coords)
     circuits = [{i} for i in range(len(coords))]
 
     while len(circuits[0]) != count:
-        (_, i, j) = sq_dist_list.pop()
+        (_, i, j) = sq_dist_list[0]
+        sq_dist_list = sq_dist_list[1:]
         c1 = circuits[i]
         c2 = circuits[j]
         c1.update(c2)
