@@ -11,6 +11,7 @@ if __name__ == "__main__":
     for i in range(1, 13):
         fn = project_dir / f"day{i:02}.py"
         if fn.exists():
+            print('~~~', fn.name, '~~~')
             runpy.run_path(fn, run_name="__main__")
 
     t2 = time.perf_counter()
