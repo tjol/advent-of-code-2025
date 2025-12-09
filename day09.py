@@ -29,34 +29,27 @@ def day09part2(input_: str):
     horz_seg_min_x = np.min(horz_segments[:, :, 0], axis=1)
     horz_seg_max_x = np.max(horz_segments[:, :, 0], axis=1)
 
-    largest_area = 0
+    ii = np.arange(len(coords), dtype="i8")
+    II, JJ = np.meshgrid(ii, ii)
 
-    # check all rects
-    for i, a in enumerate(coords):
-        for b in coords[i + 1 :]:
-            x1 = min(a[0], b[0])
-            x2 = max(a[0], b[0])
-            y1 = min(a[1], b[1])
-            y2 = max(a[1], b[1])
+    zipped = np.stack([coords[II], coords[JJ]], axis=2)
+    xy1 = np.min(zipped, axis=2)
+    x1 = xy1[:, :, 0]
+    y1 = xy1[:, :, 1]
+    xy2 = np.max(zipped, axis=2)
+    x2 = xy2[:, :, 0]
+    y2 = xy2[:, :, 1]
 
-            if not (
-                np.any(
-                    (x1 < vert_seg_x)
-                    & (vert_seg_x < x2)
-                    & (vert_seg_min_y < y2)
-                    & (vert_seg_max_y > y1)
-                )
-                or np.any(
-                    (y1 < horz_seg_y)
-                    & (horz_seg_y < y2)
-                    & (horz_seg_min_x < x2)
-                    & (horz_seg_max_x > x1)
-                )
-            ):
-                area = (y2 - y1 + 1) * (x2 - x1 + 1)
-                largest_area = max(area, largest_area)
+    areas = np.prod(np.abs(coords[II] - coords[JJ]) + 1, axis=-1)
+    invalid = np.zeros_like(II, dtype=bool)
 
-    return largest_area
+    for x, min_y, max_y in zip(vert_seg_x, vert_seg_min_y, vert_seg_max_y):
+        invalid[(x1 < x) & (x < x2) & (min_y < y2) & (max_y > y1)] = True
+
+    for y, min_x, max_x in zip(horz_seg_y, horz_seg_min_x, horz_seg_max_x):
+        invalid[(y1 < y) & (y < y2) & (min_x < x2) & (max_x > x1)] = True
+
+    return np.max(areas[~invalid])
 
 
 TEST_INPUT = """
