@@ -100,7 +100,6 @@ def find_cheapest_joltage(joltage_target, buttons):
                         any_updated_1 = True
                     else:
                         break
-            # print(bounds)
             if not any_updated_1:
                 break
         
@@ -180,4 +179,4 @@ def test_example_1_p2():
 if __name__ == "__main__":
     from aoc_harness import puzzle_main
 
-    puzzle_main(day10part1, day10part2)
+    puzzle_main(day10part1)
